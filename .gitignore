@@ -1,0 +1,18 @@
+# Generated outputs (large files, regenerated each run)
+output/
+*.mp4
+*.mp3
+
+# Keep the directory structure but ignore generated content
+audio/*.mp3
+video/*.png
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+*.swp
+*.swo

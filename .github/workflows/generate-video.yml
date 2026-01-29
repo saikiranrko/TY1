@@ -1,0 +1,60 @@
+name: Generate Cozy Stream Video
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every 12 hours
+    - cron: "0 */12 * * *"
+
+jobs:
+  generate-cozy-video:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/create_base_video.sh
+          chmod +x scripts/generate_soundscape.sh
+          chmod +x scripts/loop_video.sh
+          chmod +x scripts/build_final_video.sh
+          chmod +x scripts/stream_to_youtube_live.py
+
+      - name: Build 12-hour cozy video
+        env:
+          TOTAL_HOURS: 12
+        run: |
+          ./scripts/build_final_video.sh "${TOTAL_HOURS}"
+
+      - name: Install Python dependencies for YouTube Live streaming
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-httplib2 google-auth-oauthlib google-api-python-client
+
+      - name: Stream video to YouTube Live
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YT_TITLE_TEMPLATE: "🔴 Cozy Live Stream - {date}"
+          YT_DESCRIPTION: "🔴 LIVE: Automatically generated cozy background stream using GitHub Actions and FFmpeg. Perfect for studying, relaxing, or sleeping."
+          YT_TAGS: "live,cozy,lofi,study,relax,sleep"
+          YT_PRIVACY_STATUS: "unlisted"
+          STREAM_DURATION_HOURS: "6"  # GitHub Actions free tier limit is 6 hours
+        timeout-minutes: 360  # 6 hours max (free tier limit)
+        run: |
+          python scripts/stream_to_youtube_live.py output/cozy_12_hour_stream.mp4 "${STREAM_DURATION_HOURS}"
+
+      - name: Upload final video artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cozy_12_hour_stream
+          path: output/cozy_12_hour_stream.mp4
+
