@@ -76,7 +76,7 @@ case "${THEME}" in
     ffmpeg -y -f lavfi -i "anoisesrc=color=pink:amplitude=0.22:sample_rate=${SR}:duration=${DURATION_SECONDS}" \
       -filter_complex "\
         [0:a]lowpass=f=1800, highpass=f=40, \
-        tremolo=f=0.05:d=0.8, \
+        tremolo=f=0.1:d=0.8, \
         acompressor=threshold=-22dB:ratio=3:attack=40:release=350, \
         aecho=0.5:0.65:60:0.10, \
         alimiter=limit=0.95 [out]" \
