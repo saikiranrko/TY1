@@ -11,6 +11,9 @@ on:
 jobs:
   generate-cozy-video:
     runs-on: ubuntu-latest
+    env:
+      TOTAL_HOURS: 1 # Generate a 1-hour video for quicker testing (can be same as stream duration)
+      STREAM_DURATION_HOURS: "0.1666" # 10 minutes for testing (10/60 = 0.1666... hours)
 
     steps:
       - name: Checkout repository
@@ -29,10 +32,7 @@ jobs:
           chmod +x scripts/build_final_video.sh
           chmod +x scripts/stream_to_youtube_live.py
 
-      - name: Build 12-hour cozy video
-        env:
-          TOTAL_HOURS: 2
-          STREAM_DURATION_HOURS: "2"
+      - name: Build cozy video content
         run: |
           ./scripts/build_final_video.sh "${TOTAL_HOURS}"
 
@@ -50,8 +50,9 @@ jobs:
           YT_DESCRIPTION: "🔴 LIVE: Automatically generated cozy background stream using GitHub Actions and FFmpeg. Perfect for studying, relaxing, or sleeping."
           YT_TAGS: "live,cozy,lofi,study,relax,sleep"
           YT_PRIVACY_STATUS: "unlisted"
-          STREAM_DURATION_HOURS: "2"  # GitHub Actions free tier limit is 6 hours
-        timeout-minutes: 150  # 6 hours max (free tier limit)
+          TOTAL_HOURS: ${{ env.TOTAL_HOURS }}
+          STREAM_DURATION_HOURS: ${{ env.STREAM_DURATION_HOURS }}  # GitHub Actions free tier limit is 6 hours
+        timeout-minutes: 15  # 10 minutes stream + buffer for setup
         run: |
           python scripts/stream_to_youtube_live.py "output/cozy_${TOTAL_HOURS}_hour_stream.mp4" "${STREAM_DURATION_HOURS}"
 
