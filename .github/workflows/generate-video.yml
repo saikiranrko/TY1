@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     # Every 12 hours
-    - cron: "0 */12 * * *"
+    # - cron: "0 */12 * * *"
+  - cron: "0 */2 * * *"
+
 
 jobs:
   generate-cozy-video:
@@ -29,7 +31,8 @@ jobs:
 
       - name: Build 12-hour cozy video
         env:
-          TOTAL_HOURS: 12
+          TOTAL_HOURS: 2
+          STREAM_DURATION_HOURS: "2"
         run: |
           ./scripts/build_final_video.sh "${TOTAL_HOURS}"
 
@@ -47,8 +50,8 @@ jobs:
           YT_DESCRIPTION: "🔴 LIVE: Automatically generated cozy background stream using GitHub Actions and FFmpeg. Perfect for studying, relaxing, or sleeping."
           YT_TAGS: "live,cozy,lofi,study,relax,sleep"
           YT_PRIVACY_STATUS: "unlisted"
-          STREAM_DURATION_HOURS: "6"  # GitHub Actions free tier limit is 6 hours
-        timeout-minutes: 360  # 6 hours max (free tier limit)
+          STREAM_DURATION_HOURS: "2"  # GitHub Actions free tier limit is 6 hours
+        timeout-minutes: 150  # 6 hours max (free tier limit)
         run: |
           python scripts/stream_to_youtube_live.py output/cozy_12_hour_stream.mp4 "${STREAM_DURATION_HOURS}"
 
