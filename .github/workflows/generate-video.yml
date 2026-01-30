@@ -28,6 +28,7 @@ jobs:
         run: |
           chmod +x scripts/create_base_video.sh
           chmod +x scripts/generate_soundscape.sh
+          chmod +x scripts/generate_video_theme.sh
           chmod +x scripts/loop_video.sh
           chmod +x scripts/build_final_video.sh
           chmod +x scripts/stream_to_youtube_live.py

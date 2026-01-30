@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# TY1
-=======
 ### Cozy 12-Hour Background Stream Generator
 
 This repository automatically generates a **YouTube-style cozy long video** using **GitHub Actions** and **FFmpeg**.
@@ -17,10 +14,11 @@ Everything runs inside **GitHub Actions** on an Ubuntu runner. No paid services 
 
 Each run of the generator introduces a bit of randomness:
 
-- **Music / ambience**: a **new 1-hour ambient soundscape is generated on every run** (no external audio needed). Themes: `rain`, `wind`, `fireplace`, `ocean` (or `random`).
-- **Background**: when `video/background.png` is auto-generated, a random color is chosen from a small cozy palette.
-
-If you provide your own `background.png`, it will be used as-is. Audio is generated every run by default.
+          - **Music / ambience**: a **new 1-hour ambient soundscape is generated on every run** (no external audio needed). Themes: `rain`, `wind`, `fireplace`, `ocean` (or `random`).
+          - **Video background**: a **new 1-hour animated video background is generated on every run** that procedurally matches the chosen audio theme (e.g., animated rain for rain sounds).
+          - **Background**: when `video/background.png` is auto-generated, a random color is chosen from a small cozy palette.
+ 
+          If you provide your own `background.png`, it will be used as-is. Audio is generated every run by default.
 
 ---
 
@@ -323,4 +321,3 @@ You can then open the file in a video player or upload it to YouTube.
 - Missing input assets (`audio/cozy_music.mp3`, `video/background.png`) are automatically recreated.
 - Re-running the scripts or workflow will simply **rebuild** the videos with the latest inputs.
 
->>>>>>> 1c8931c (Add cozy YouTube live stream generator with random soundscapes)

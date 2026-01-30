@@ -4,7 +4,7 @@ set -euo pipefail
 # Usage: ./scripts/build_final_video.sh [TOTAL_HOURS]
 # Default: 12
 
-TOTAL_HOURS="${1:-12}"
+TOTAL_HOURS="${1:-0.25}" # Default to 15 minutes
 
 echo "[build_final_video] Starting build for ${TOTAL_HOURS}-hour cozy stream video..."
 
